@@ -37,7 +37,7 @@ $list = [
 	],
 	[
 		'name' => 'Vanesa',
-		'pic' => 'emplotee.png',
+		'pic' => 'employee.png',
 		'position' => 'Assistant',
 		'bardDay' => '11.03.1991',
 		'sex' => 'female'
@@ -71,5 +71,26 @@ $list = [
 		'sex' => 'male'
 	]
 ];
+$result = [];
+$person = $_POST['person'];
+if($person != "all"){
+	$len = count($list);
+	for($i = 0; $i < $len; $i++){
+		if($list[$i]['name'] == $person){
+			$result = $list[$i];
+		}
+	}
+} else {
+	$len = count($list);
+	for($i = 0; $i < $len; $i++){
+		$result[$i]['name'] = $list[$i]['name'];
+		$result[$i]['pic'] = $list[$i]['pic'];
+	}
+}
 
-echo json_encode($list);
+
+
+echo json_encode($result);
+
+
+

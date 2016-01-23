@@ -4,17 +4,65 @@
 		<meta charset="UTF-8">
 		<title>Insert title here</title>
 		<script type="text/javascript" src="ajax.js"></script>
-
+		<style type="text/css">
+			img{
+				width: 10%;
+				height: 10%;
+			}
+			.person>div {
+				width: 20%;
+				height: 20%;
+			}
+			a{
+				padding-left: 20px;
+				font-size: 20px;
+				 text-decoration: none;
+			}
+			div{
+			
+				margin: 10px;
+				border: 1px solid gray;
+			}
+			p {
+				margin: 0;
+				padding: 10px 0 0 10px;
+			}
+		</style>
 	</head>
 	<body>
-	
+		<section id="veiw">
+		
+		</section>
 	</body>
 	<script type="text/javascript">
 		var person;
+		var veiw = document.getElementById('veiw');
 		var callback = function(xhr) {
 			person = JSON.parse(xhr.responseText);
 			console.log(person);
+			var anchor = document.getElementsByTagName('a');
+			for(var i = 0; i < person.length ; i+=1){
+				veiw.innerHTML += '<div><img src="img/'+ person[i].pic + '"><a href="#">' + person[i].name +'</a></div>';
+			}
+			veiw.addEventListener("click", 
+				        function (event) {
+		            event.preventDefault();
+		            var name = event.target.text;
+		            Ajax.makeRequest('POST', 'server.php', {'person': name}, true, onePerson);
+		        }, 
+		        false);
 		}
-		Ajax.makeRequest('POST', 'server.php', {}, true, callback);
+		function onePerson(xhr){
+			person = JSON.parse(xhr.responseText);
+		 	veiw.innerHTML = '';
+			veiw.innerHTML = '<div class="person"><img src="img/' + person.pic + '"><p>Name: '+ person.name +
+					'</p><p>Position: '+ person.position + '</p><p>Gender: '+ person.sex +
+					'</p><p>Date of birth: ' + person.bardDay + '</p></div>';
+			console.log(person.pic);
+			
+		}
+		Ajax.makeRequest('POST', 'server.php', {'person':'all'}, true, callback);
+		
+		
 	</script>
 </html>
